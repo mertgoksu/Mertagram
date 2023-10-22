@@ -6,10 +6,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,15 +41,18 @@ class UploadActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
-
+    private lateinit var uploadButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUploadBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        uploadButton = binding.uploadButton
+        uploadButton.isEnabled = true
+
         supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.darkThemeColor)))
-        binding.uploadButton.setBackgroundColor(ContextCompat.getColor(this, R.color.darkThemeColor))
+        uploadButton.setBackgroundColor(ContextCompat.getColor(this, R.color.darkThemeColor))
 
         registerLauncher()
 
@@ -64,6 +69,7 @@ class UploadActivity : AppCompatActivity() {
         val imageReference = reference.child("images").child(imageName)
 
         if (selectedPicture != null) {
+            uploadButton.isEnabled = false
             val selectedBitmap = makeSmallerBitmap(selectedPicture!!, 800) // 800, istediğiniz genişliği temsil eder.
 
             val baos = ByteArrayOutputStream()
@@ -89,9 +95,11 @@ class UploadActivity : AppCompatActivity() {
                             finish()
                         }.addOnFailureListener {
                             Toast.makeText(this, it.localizedMessage, Toast.LENGTH_SHORT).show()
+                            uploadButton.isEnabled = true
                         }
                     } else {
                         Toast.makeText(this, "Problem ????", Toast.LENGTH_LONG).show()
+                        uploadButton.isEnabled = true
                     }
                 }
             }
@@ -154,23 +162,46 @@ class UploadActivity : AppCompatActivity() {
 
     //permissions
     fun selectImage(view: View){
-        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            //no permission
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,android.Manifest.permission.READ_EXTERNAL_STORAGE)){
-                Snackbar.make(view,"Permission needed for gallery",Snackbar.LENGTH_INDEFINITE).setAction("Give Permission"){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            //Android 33+
+            if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED){
+                //no permission
+                if(ActivityCompat.shouldShowRequestPermissionRationale(this,android.Manifest.permission.READ_MEDIA_IMAGES)){
+                    Snackbar.make(view,"Permission needed for gallery",Snackbar.LENGTH_INDEFINITE).setAction("Give Permission"){
+                        //request permission
+                        permissionLauncher.launch(android.Manifest.permission.READ_MEDIA_IMAGES)
+                    }.show()
+                }else{
+                    //request permission
+                    permissionLauncher.launch(android.Manifest.permission.READ_MEDIA_IMAGES)
+                }
+
+            }else {
+                //intent to gallery
+                val intentToGallery = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                //start activity for result
+                activityResultLauncher.launch(intentToGallery)
+            }
+        }else{
+            //Android 32-
+            if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                //no permission
+                if(ActivityCompat.shouldShowRequestPermissionRationale(this,android.Manifest.permission.READ_EXTERNAL_STORAGE)){
+                    Snackbar.make(view,"Permission needed for gallery",Snackbar.LENGTH_INDEFINITE).setAction("Give Permission"){
+                        //request permission
+                        permissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    }.show()
+                }else{
                     //request permission
                     permissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                }.show()
-            }else{
-                //request permission
-                permissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
+                }
 
-        }else {
-            //intent to gallery
-            val intentToGallery = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            //start activity for result
-            activityResultLauncher.launch(intentToGallery)
+            }else {
+                //intent to gallery
+                val intentToGallery = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                //start activity for result
+                activityResultLauncher.launch(intentToGallery)
+            }
         }
     }
 

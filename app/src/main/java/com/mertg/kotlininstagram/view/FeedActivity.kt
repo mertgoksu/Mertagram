@@ -1,5 +1,6 @@
 package com.mertg.kotlininstagram.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -55,9 +56,10 @@ class FeedActivity : AppCompatActivity() {
         binding.recyclerView.adapter = feedAdapter
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun getData() {
         db.collection("Posts")
-            .orderBy("date", Query.Direction.DESCENDING) // "date" alanına göre azalan sıralama
+            .orderBy("date", Query.Direction.DESCENDING) //"date" alanına göre azalan sıralama
             .addSnapshotListener { value, error ->
             if (error != null) {
                 Toast.makeText(this, error.localizedMessage, Toast.LENGTH_LONG).show()
@@ -74,11 +76,9 @@ class FeedActivity : AppCompatActivity() {
                             val userEmail = document.get("userEmail") as String
                             val downloadUrl = document.get("downloadUrl") as String
 
-                            println(comment)
                             val post = Post(userEmail, comment, downloadUrl)
                             postArrayList.add(post)
                         }
-
                         feedAdapter.notifyDataSetChanged()
                     }
                 }
@@ -86,13 +86,14 @@ class FeedActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun getMyData(){
         val currentEmail = auth.currentUser!!.email!!
         db.collection("Posts").whereEqualTo("userEmail", currentEmail)
             .orderBy("date", Query.Direction.DESCENDING) // "date" alanına göre azalan sıralama
             .addSnapshotListener { value, error ->
                 if (error != null) {
-                    Toast.makeText(this, error.localizedMessage, Toast.LENGTH_LONG).show()
+//                    Toast.makeText(this, error.localizedMessage, Toast.LENGTH_LONG).show()
                 } else {
                     if (value != null) {
                         if (!value.isEmpty) {

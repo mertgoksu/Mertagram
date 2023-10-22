@@ -5,64 +5,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity"
-    android:background="#BCBCBC">
-
+    android:background="#BCBCBC"
+    tools:context=".view.MainActivity">
 
 
     <EditText
         android:id="@+id/emailText"
         android:layout_width="291dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="77dp"
-        android:layout_marginBottom="32dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="35dp"
         android:ems="10"
         android:hint="Enter Email"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/passwordText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/logoText" />
+
+    <Button
+        android:id="@+id/signInButton"
+        android:layout_width="125dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:onClick="signInClicked"
+        android:text="SIGN IN"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/uyariText"
+        app:layout_constraintEnd_toStartOf="@+id/registerButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="125dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="30dp"
+        android:onClick="registerClicked"
+        android:text="REGISTER"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/uyariText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
 
     <EditText
         android:id="@+id/passwordText"
         android:layout_width="291dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="32dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="25dp"
         android:ems="10"
         android:hint="Enter Password"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/signUpButton"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailText" />
 
-    <Button
-        android:id="@+id/signInButton"
-        android:layout_width="96dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="66dp"
-        android:layout_marginEnd="63dp"
-        android:onClick="signInClicked"
-        android:text="SIGN IN"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/signUpButton"
-        app:layout_constraintEnd_toStartOf="@+id/signUpButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/signUpButton"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/signUpButton"
-        android:layout_width="96dp"
-        android:layout_height="57dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="305dp"
-        android:onClick="signUpClicked"
-        android:text="SIGN UP"
-        android:textSize="14sp"
+    <TextView
+        android:id="@+id/uyariText"
+        android:layout_width="301dp"
+        android:layout_height="177dp"
+        android:layout_marginBottom="40dp"
+        android:background="#272727"
+        android:text="Gerçek mail girilmesi şart değil, \nexample@g.com formatında olması gerek.\n\nŞifre en az 6 haneli olmalı.\n\nŞifrenizi unutursanız yardımcı olamam, kurtarma imkanımız yok.\n"
+        android:textColor="#E0E0E0"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/signInButton"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/logoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Mertagram"
+        android:textAlignment="center"
+        android:textColor="#1C1C1C"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
