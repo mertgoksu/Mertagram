@@ -49,11 +49,14 @@ class FeedActivity : AppCompatActivity() {
             getData()
         }
 
-
-
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         feedAdapter = FeedRecyclerAdapter(postArrayList)
         binding.recyclerView.adapter = feedAdapter
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            getData()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
