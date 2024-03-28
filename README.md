@@ -14,6 +14,8 @@ A basic Kotlin app to practice storing images with Firebase/Firestore and Fireba
 - Firebase Auth <br>
 - Firestore <br>
 - Picasso <br>
+- Activities <br>
+- XML <br>
 
 ### Here are some photos and videos of the app ;
 <br>
