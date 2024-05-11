@@ -17,8 +17,9 @@ A basic Kotlin app to practice storing images with Firebase/Firestore and Fireba
 - Activities <br>
 - XML <br>
 
-### Here are some photos and videos of the app ;
-<br>
+#
+### Here are some photos and videos of the app;
+#
 
 ### App Images
 <img width="322" alt="1" src="https://github.com/mertgoksu/Mertagram/assets/119433132/f4f0f48b-5b2f-47b1-b875-11d14d4c578c">
